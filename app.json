@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "pokerzone",
+    "slug": "pokerzone",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "pokerzone"
+}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, FlatList, Text, View } from "react-native";
 import styled from "styled-components/native";
 import Page from "./Page";
 
@@ -23,7 +23,7 @@ const IndicatorWrapper = styled.View`
   margin-top: 16px;
 `;
 
-const ItemTitleWrapper = styled.View`
+const ItemTitleWrapper = styled(Animated.createAnimatedComponent(View))`
   padding-bottom: 10px;
   align-items: center;
 `;
@@ -35,31 +35,51 @@ const ItemTitle = styled.Text`
 const Carousel = ({ pages, pageWidth, gap, offset }) => {
   const [page, setPage] = useState(0);
   const onScroll = (e) => {
-    const newPage = Math.round(e.nativeEvent.contentOffset.x / (pageWidth + gap));
+    const newPage = Math.abs(Math.round(e.nativeEvent.contentOffset.x / (pageWidth + gap)));
     setPage(newPage);
   };
+  const scrollX = useRef(new Animated.Value(0)).current;
 
-  function renderItem(item,index) {
-    console.log(item, index);
+  console.log(scrollX);
+
+  function renderItem(item, index, scrollX) {
+    const inputRange = [(index - 1) * pageWidth, index * pageWidth, (index + 1) * pageWidth];
+
+    console.log(inputRange)
+    console.log(scrollX)
+
+    const opacity = scrollX.interpolate({
+      inputRange,
+      outputRange: [0.4, 1, 0.4],
+    });
+
+    const titleOpacity = scrollX.interpolate({
+      inputRange,
+      outputRange: [0, 1, 0],
+    });
+
+    const scale = scrollX.interpolate({
+      inputRange,
+      outputRange: [0.9, 1, 0.9],
+    });
+
     return (
-      <View>
-        <ItemTitleWrapper style={index === page ? {
-          opacity: 1
-        } : {
-          opacity: 0
-        }}>
+      <Animated.View style={[{ opacity, transform: [{ scale }] }]}>
+        <ItemTitleWrapper
+          style={{opacity:titleOpacity}}
+        >
           <View style={{ borderWidth: 1, width: "80%", borderRadius: 20 }}>
             <ItemTitle>{item.color}</ItemTitle>
           </View>
         </ItemTitleWrapper>
         <Page item={item} style={{ width: pageWidth, marginHorizontal: gap / 2, flex: 1 }} />
-      </View>
+      </Animated.View>
     );
   }
 
   return (
     <Container>
-      <FlatList
+      <Animated.FlatList
         automaticallyAdjustContentInsets={false}
         contentContainerStyle={{
           paddingHorizontal: offset + gap / 2,
@@ -68,17 +88,18 @@ const Carousel = ({ pages, pageWidth, gap, offset }) => {
         decelerationRate="fast"
         horizontal
         keyExtractor={(item) => `page__${item.color}`}
-        onScroll={onScroll}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], { useNativeDriver: true })}
+        // scrollEventThrottle={12}
         pagingEnabled
-        renderItem={({ item, index }) => renderItem(item, index)}
+        renderItem={({ item, index }) => renderItem(item, index, scrollX)}
         snapToInterval={pageWidth + gap}
         snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
       />
       <IndicatorWrapper>
-        {Array.from({ length: pages.length }, (_, i) => i).map((i) => (
+        {/* {Array.from({ length: pages.length }, (_, i) => i).map((i) => (
           <Indicator key={`indicator_${i}`} focused={i === page} />
-        ))}
+        ))} */}
       </IndicatorWrapper>
     </Container>
   );

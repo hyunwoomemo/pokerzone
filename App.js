@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import { MyDrawer } from './navigator/Drawer';
 import Layout from './components/Layout';
+import OutNav from './navigator/OutNav';
 
 const Container = styled.View``
 
@@ -15,7 +16,7 @@ export default function App() {
     <>
       <StatusBar style='dark' />
       <NavigationContainer>
-          <MyDrawer />
+          <OutNav />
       </NavigationContainer>
     </>
   );

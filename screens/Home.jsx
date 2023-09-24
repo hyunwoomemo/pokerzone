@@ -10,8 +10,6 @@ const Container = styled.View`
   margin-top: 20px;
 `;
 
-const Title = styled.View``;
-const TitleText = styled.Text``;
 const screenWidth = Math.round(Dimensions.get("window").width);
 
 const PAGES = [
@@ -25,7 +23,7 @@ const PAGES = [
   },
   {
     num: 3,
-    color: "#FFDD94",
+    color: "#CCABD8",
   },
   {
     num: 4,
@@ -33,7 +31,7 @@ const PAGES = [
   },
   {
     num: 5,
-    color: "#CCABD8",
+    color: "#FFDD94",
   },
 ];
 

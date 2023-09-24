@@ -18,7 +18,7 @@ const Tabs = () => {
     }}
       screenOptions={{
         headerShown: false,
-        tabBarActiveBackgroundColor: 'tomato',
+        tabBarActiveBackgroundColor: 'pink',
         tabBarShowLabel: false,
     }}
     >

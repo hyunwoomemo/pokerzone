@@ -1,15 +1,10 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Home from "../screens/Home";
-import Menu2 from "../screens/Menu2";
 import Tabs from "./Tab";
-import Root from "./Root";
-import { useEffect, useRef, useState } from "react";
-import { Animated, Easing, LayoutAnimation, Text, TouchableOpacity, View } from "react-native";
-import Menu3 from "../screens/Menu3";
+import { useRef, useState } from "react";
+import { Animated, LayoutAnimation, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
-import { Extrapolate, interpolate } from "react-native-reanimated";
-import { toggleAnimation } from '../animations/toggleAnimation';
+import { toggleAnimation } from "../animations/toggleAnimation";
 
 const Drawer = createDrawerNavigator();
 
@@ -25,32 +20,32 @@ const WrapperTitle = styled.Text`
 `;
 
 const ItemWrapper = styled(Animated.createAnimatedComponent(View))`
-margin-top: 5px;
-margin-left: 10px;
-`
+  margin-top: 5px;
+  margin-left: 10px;
+`;
 
 const InfoSection = styled.View`
-   flex-direction: row;
-   gap: 10px;
-   margin-bottom: 20px;
-`
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+`;
 const ProfileWrapper = styled.View`
   background-color: gray;
   justify-content: center;
   align-items: center;
-`
+`;
 const InfoTextWrapper = styled.View`
   padding: 10px;
   gap: 10px;
   justify-content: center;
-`
+`;
 const NickText = styled.Text`
   font-size: 18px;
   font-weight: bold;
-`
+`;
 const MyTicketText = styled.Text`
   color: hotpink;
-`
+`;
 
 const AccordionWrapper = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,15 +55,15 @@ const AccordionWrapper = ({ title, children }) => {
     const config = {
       duration: 300,
       toValue: isOpen ? 0 : 1,
-      useNativeDriver: true
+      useNativeDriver: true,
     };
     Animated.timing(animationController, config).start();
-    LayoutAnimation.configureNext(toggleAnimation)
+    LayoutAnimation.configureNext(toggleAnimation);
     setIsOpen(!isOpen);
   };
 
   return (
-    <Animated.View style={{overflow: 'hidden'}}>
+    <Animated.View style={{ overflow: "hidden" }}>
       <TouchableOpacity onPress={toggleListItem}>
         <WrapperTitle>{title}</WrapperTitle>
       </TouchableOpacity>
@@ -97,7 +92,7 @@ const DrawerContent = () => {
   return (
     <DrawerContainer>
       <InfoSection>
-        <ProfileWrapper style={{width:70, height:70, borderRadius: 70 / 2}}>
+        <ProfileWrapper style={{ width: 70, height: 70, borderRadius: 70 / 2 }}>
           <Text>사진</Text>
         </ProfileWrapper>
         <InfoTextWrapper>

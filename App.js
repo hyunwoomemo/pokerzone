@@ -1,21 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import styled from 'styled-components/native'
+import Root from './navigator/Root';
+import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import { MyDrawer } from './navigator/Drawer';
+import Layout from './components/Layout';
+
+const Container = styled.View``
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar style='dark' />
+      <NavigationContainer>
+          <MyDrawer />
+      </NavigationContainer>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

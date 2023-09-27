@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableNativeFeedback, TouchableOpacity } from "react-native";
+import { Text, Image } from "react-native";
 import styled from "styled-components/native";
 
 const Container = styled.View`
@@ -83,7 +83,7 @@ const Login = ({navigation: {navigate}}) => {
   return (
     <Container>
       <LogoWrapper>
-        <Text>로고</Text>
+        <Image source={{uri: 'https://newgenerationdatadev.blob.core.windows.net/data/template/t08/common/logo_txt.png'}}></Image>
       </LogoWrapper>
       <FormWrapper>
         <FormItemWrapper>

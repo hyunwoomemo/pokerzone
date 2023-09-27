@@ -3,6 +3,9 @@ import { Dimensions, Text, View } from "react-native";
 import Layout from "../components/Layout";
 import styled from "styled-components/native";
 import Carousel from "../components/Carousel";
+import { resourceApi } from '../api';
+import {useQuery} from 'react-query'
+
 
 const Container = styled.View`
   flex: 1;
@@ -12,34 +15,13 @@ const Container = styled.View`
 
 const screenWidth = Math.round(Dimensions.get("window").width);
 
-const PAGES = [
-  {
-    num: 1,
-    color: "#86E3CE",
-  },
-  {
-    num: 2,
-    color: "#D0E6A5",
-  },
-  {
-    num: 3,
-    color: "#CCABD8",
-  },
-  {
-    num: 4,
-    color: "#FA897B",
-  },
-  {
-    num: 5,
-    color: "#FFDD94",
-  },
-];
-
 const Home = () => {
+  const {isLoading, data} = useQuery(['resource', 'poster'], resourceApi.posters)
   return (
     <Layout>
-      <Container>
-        <Carousel gap={16} offset={36} pages={PAGES} pageWidth={screenWidth - (16 + 36) * 2} />
+      <Container >
+        {!isLoading &&
+          <Carousel gap={4} offset={36} data={data.DATA} pageWidth={screenWidth - (4 + 36) * 2} />}
       </Container>
     </Layout>
   );

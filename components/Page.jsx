@@ -1,6 +1,8 @@
-import React from 'react';
-import styled from 'styled-components/native';
-import {ViewStyle} from 'react-native';
+import React from "react";
+import styled from "styled-components/native";
+import { View } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
+import {Dimensions} from 'react-native'
 
 
 const PageItem = styled.View`
@@ -8,14 +10,32 @@ const PageItem = styled.View`
   justify-content: center;
   align-items: center;
   border-radius: 20px;
+  margin-top: 30px;
 `;
 
 const PageNum = styled.Text``;
+const PosterImg = styled.Image`
+flex: 1;
+width: 80%;
+height: 80%;
+overflow: hidden;
+`;
 
-export default function Page({item, style}) {
+const PosterWrapper = styled.TouchableHighlight`
+flex: 1;
+justify-content: center;
+align-items: center;
+`
+
+
+export default function Page({ item, style }) {
+  const {width, height} = Dimensions.get('window')
   return (
     <PageItem color={item.color} style={style}>
-      <PageNum>{item.num}</PageNum>
+      <PosterWrapper style={{width: width, height: height, }}>
+        <PosterImg source={{ uri: item.poster_url }} resizeMode={"contain"} style={{ borderRadius: width / 15 }} />
+      </PosterWrapper>
+      {/* <PageNum>{item.poster_url}</PageNum> */}
     </PageItem>
   );
 }

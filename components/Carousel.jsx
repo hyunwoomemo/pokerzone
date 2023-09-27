@@ -3,6 +3,7 @@ import { Animated, FlatList, Text, View } from "react-native";
 import styled from "styled-components/native";
 import Page from "./Page";
 
+
 const Container = styled.View`
   height: 90%;
   justify-content: center;
@@ -32,7 +33,7 @@ const ItemTitle = styled.Text`
   text-align: center;
 `;
 
-const Carousel = ({ pages, pageWidth, gap, offset }) => {
+const Carousel = ({ data, pageWidth, gap, offset }) => {
   const [page, setPage] = useState(0);
   const onScroll = (e) => {
     const newPage = Math.abs(Math.round(e.nativeEvent.contentOffset.x / (pageWidth + gap)));
@@ -40,13 +41,10 @@ const Carousel = ({ pages, pageWidth, gap, offset }) => {
   };
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  console.log(scrollX);
 
   function renderItem(item, index, scrollX) {
     const inputRange = [(index - 1) * pageWidth, index * pageWidth, (index + 1) * pageWidth];
 
-    console.log(inputRange)
-    console.log(scrollX)
 
     const opacity = scrollX.interpolate({
       inputRange,
@@ -68,8 +66,8 @@ const Carousel = ({ pages, pageWidth, gap, offset }) => {
         <ItemTitleWrapper
           style={{opacity:titleOpacity}}
         >
-          <View style={{ borderWidth: 1, width: "80%", borderRadius: 20 }}>
-            <ItemTitle>{item.color}</ItemTitle>
+          <View style={{ borderWidth: 2, width: "80%", borderRadius: 20 }}>
+            <ItemTitle>{item.title}</ItemTitle>
           </View>
         </ItemTitleWrapper>
         <Page item={item} style={{ width: pageWidth, marginHorizontal: gap / 2, flex: 1 }} />
@@ -84,10 +82,10 @@ const Carousel = ({ pages, pageWidth, gap, offset }) => {
         contentContainerStyle={{
           paddingHorizontal: offset + gap / 2,
         }}
-        data={pages}
+        data={data}
         decelerationRate="fast"
         horizontal
-        keyExtractor={(item) => `page__${item.color}`}
+        keyExtractor={(item, index) => `page__${item.title}__${index}`}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], { useNativeDriver: true })}
         // scrollEventThrottle={12}
         pagingEnabled

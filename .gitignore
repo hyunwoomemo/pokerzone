@@ -33,3 +33,9 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# api
+api.jks
+.env
+package-lock.json
+android/app/release/app-release.apk

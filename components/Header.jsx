@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Image } from "react-native";
 import styled from "styled-components/native";
 import { MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -39,7 +39,9 @@ const Header = () => {
         <Octicons name="three-bars" size={24} color="black" />
       </Hambuger>
       <Main onPress={() => navigation.navigate("home")}>
-        <MaterialCommunityIcons name="cards-spade-outline" size={30} color="black" />
+        <Image source={{uri: 'https://newgenerationdatadev.blob.core.windows.net/data/template/t08/common/logo.png'}}
+        width={40} height={40} resizeMode='cover'/>
+        {/* <MaterialCommunityIcons name="cards-spade-outline" size={30} color="black" /> */}
       </Main>
       <QRWrapper>
         <TouchableOpacity>

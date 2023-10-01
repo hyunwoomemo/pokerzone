@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Platform } from 'react-native';
+// import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, Platform, StatusBar } from 'react-native';
 import styled from 'styled-components/native'
 import Root from './navigator/Root';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,15 +9,22 @@ import { MyDrawer } from './navigator/Drawer';
 import Layout from './components/Layout';
 import OutNav from './navigator/OutNav';
 import { QueryClientProvider, QueryClient } from 'react-query';
+// import * as SplashScreen from 'expo-splash-screen'
 
+// SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient()
 
 export default function App() {
+  
+  // const [ready, setReady] = useState(false);
+  
+  console.log(StatusBar.currentHeight)
+
   return (
     <QueryClientProvider client={queryClient}>
-      <StatusBar style='dark' />
-      <SafeAreaView style={Platform.OS === 'android' ? { flex: 1, paddingTop: StatusBar.currentHeight, backgroundColor: '#ebf2f0' } : { flex: 1, paddingTop: 0 }}>
+      <StatusBar barStyle='dark-content' backgroundColor='#ebf2f0'/>
+      <SafeAreaView style={Platform.OS === 'android' ? { flex: 1,  backgroundColor: '#ebf2f0' } : { flex: 1, paddingTop: 0, backgroundColor: '#ebf2f0' }}>
         <NavigationContainer>
           <OutNav />
         </NavigationContainer>

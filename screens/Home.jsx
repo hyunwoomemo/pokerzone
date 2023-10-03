@@ -16,12 +16,14 @@ const Container = styled.View`
 const screenWidth = Math.round(Dimensions.get("window").width);
 
 const Home = () => {
-  const {isLoading, data} = useQuery(['resource', 'poster'], resourceApi.posters)
+  const { isLoading, data } = useQuery(['resource', 'poster'], resourceApi.posters)
+  // console.log(data)
   return (
     <Layout>
       <Container >
         {!isLoading &&
           <Carousel gap={4} offset={36} data={data.DATA} pageWidth={screenWidth - (4 + 36) * 2} />}
+        {isLoading && <View><Text>Loading...</Text></View>}
       </Container>
     </Layout>
   );

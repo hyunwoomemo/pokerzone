@@ -1,10 +1,15 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Tabs from "./Tab";
-import { useRef, useState } from "react";
-import { Animated, LayoutAnimation, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Image, LayoutAnimation, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
 import { toggleAnimation } from "../animations/toggleAnimation";
+import Profile from "../screens/Profile";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState } from "../recoil/auth/atom";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Notice from "../screens/Notice";
 
 const Drawer = createDrawerNavigator();
 
@@ -29,7 +34,7 @@ const InfoSection = styled.View`
   gap: 10px;
   margin-bottom: 20px;
 `;
-const ProfileWrapper = styled.View`
+const ProfileWrapper = styled.TouchableOpacity`
   background-color: gray;
   justify-content: center;
   align-items: center;
@@ -69,7 +74,7 @@ const AccordionWrapper = ({ title, children }) => {
       </TouchableOpacity>
       {isOpen &&
         menuData.map((_, i) => (
-          <AccordionItem key={i} content={_.content}>
+          <AccordionItem key={i} content={_.content} name={_.name}>
             {_.content}
           </AccordionItem>
         ))}
@@ -77,26 +82,43 @@ const AccordionWrapper = ({ title, children }) => {
   );
 };
 
-const AccordionItem = ({ content }) => {
+const AccordionItem = ({ content, name }) => {
   const navigation = useNavigation();
   return (
     <ItemWrapper>
-      <Text onPress={() => navigation.navigate(content)}>{content}</Text>
+      <Text onPress={() => navigation.navigate(name)}>{content}</Text>
     </ItemWrapper>
   );
 };
 
-const menuData = [{ content: "ticket" }, { content: "2" }, { content: "3" }, { content: "4" }];
+const menuData = [
+  { content: "공지사항", name: "Notice" },
+  { content: "2", name: "2" },
+  { content: "3", name: "3" },
+  { content: "4", name: "4" },
+];
 
-const DrawerContent = () => {
+const DrawerContent = ({ navigation: { navigate } }) => {
+  const [user, setUser] = useState();
+  const getUser = async () => {
+    const data = await AsyncStorage.getItem("user");
+    setUser(JSON.parse(data));
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  console.log("drawer", user);
+
   return (
     <DrawerContainer>
       <InfoSection>
-        <ProfileWrapper style={{ width: 70, height: 70, borderRadius: 70 / 2 }}>
-          <Text>사진</Text>
+        <ProfileWrapper onPress={() => navigate("Profile")} style={{ width: 70, height: 70, borderRadius: 70 / 2 }}>
+          <Image source={{ uri: user?.user_profile_url }} width={70} height={70} borderRadius={70 / 2} resizeMode="cover" />
         </ProfileWrapper>
         <InfoTextWrapper>
-          <NickText>지안이</NickText>
+          <NickText>{user?.nick}</NickText>
           <MyTicketText>3장</MyTicketText>
         </InfoTextWrapper>
       </InfoSection>
@@ -115,6 +137,8 @@ export function MyDrawer() {
       }}
     >
       <Drawer.Screen name="Tabs" component={Tabs} />
+      {/* <Drawer.Screen name="Profile" component={Profile} options={{}} />
+      <Drawer.Screen name="Notice" component={Notice} options={{}} /> */}
     </Drawer.Navigator>
   );
 }

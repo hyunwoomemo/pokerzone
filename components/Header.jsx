@@ -40,7 +40,7 @@ const Header = () => {
       </Hambuger>
       <Main onPress={() => navigation.navigate("home")}>
         <Image source={{uri: 'https://newgenerationdatadev.blob.core.windows.net/data/template/t08/common/logo.png'}}
-        width={40} height={40} resizeMode='cover'/>
+        width={30} height={30} resizeMode='cover'/>
         {/* <MaterialCommunityIcons name="cards-spade-outline" size={30} color="black" /> */}
       </Main>
       <QRWrapper>

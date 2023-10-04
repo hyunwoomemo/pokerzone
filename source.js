@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 export const Icon = {
   logo: 'https://newgenerationdatadev.blob.core.windows.net/data/template/t08/common/logo_txt.png',
   user: 'https://newgenerationdatadev.blob.core.windows.net/data/template/t08/account/icon-user.png',

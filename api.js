@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const BASE_URL = 'https://www.pokerplus.co.kr'
 
 export const resourceApi = {
@@ -5,11 +7,5 @@ export const resourceApi = {
 }
 
 export const authApi = {
-  login: (data) => fetch(`${BASE_URL}/account/login`, {
-    method: 'post',
-    body: JSON.stringify({
-      email: data.email,
-      password: data.password
-    })
-  }).then((res) => res.json())
+  login: (data) => axios.post(`${BASE_URL}/account/login`, data).then((res) => res.data)
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Text, Image, LayoutAnimation } from "react-native";
+import { Text, Image, LayoutAnimation, Alert } from "react-native";
 import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "../../source";
@@ -7,6 +7,10 @@ import GradientBtn from "../../components/GradientBtn";
 import InputField from "../../components/InputField";
 import { useMutation, useQuery } from "react-query";
 import { authApi } from "../../api";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { authState } from '../../recoil/auth/atom';
 
 const Container = styled.View`
   flex: 1;
@@ -176,15 +180,35 @@ const Login = ({ navigation: { navigate } }) => {
   };
 
   const { data, mutate, isLoading, isError, error: mutateError, isSuccess } = useMutation(authApi.login);
+  const [auth, setAuth] = useRecoilState(authState)
 
   const onLogin = () => {
-    mutate({ email: values.email, password: values.password });
-
-    if (data?.CODE === 'AL001') {
-      navigate('Drawer')
-    }
+    mutate({ id: values.email, password: values.password },
+      {
+        onSuccess: async (data) => {
+          console.log(data)
+          if (data.CODE === 'AL000') {
+            Alert.alert('로그인 성공')
+            const accountInfo = await axios.get('https://www.pokerplus.co.kr/account/info', {
+              headers: {
+                Authorization: `Bearer ${data.DATA.TOKEN}`,
+                Cookie: `auth._token.pokerzone=${data.DATA.TOKEN}`
+              }
+            }).then(res => res.data)
+            console.log('accpunt',accountInfo)
+            await AsyncStorage.setItem('token', data.DATA.TOKEN)
+            await AsyncStorage.setItem('user', JSON.stringify(accountInfo.DATA))
+            // setAuth(accountInfo.DATA)
+            // console.log(accountInfo)
+            navigate('InNav')
+          } else {
+            Alert.alert('로그인 실패')
+          }
+        }
+      }
+    );
   };
-  console.log(data, mutate, isLoading, isError, error, mutateError, isSuccess);
+  console.log(data, mutate, isLoading, isError, mutateError, isSuccess);
 
 
   return (
